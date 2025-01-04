@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const StudentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
+  email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   passwordChangeRequired: { type: Boolean, default: true }, // On login for first time, student has to set new password
