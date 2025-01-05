@@ -61,8 +61,10 @@ exports.updateStudent = async (req, res) => {
 exports.deleteStudent = async (req, res) => {
   try {
     await Student.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Student deleted successfully" });
+    res
+      .status(200)
+      .json({ isSuccess: true, message: "Student deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ isSuccess: false, error: error.message });
   }
 };
