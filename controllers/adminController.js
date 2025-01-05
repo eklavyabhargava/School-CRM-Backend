@@ -41,37 +41,36 @@ exports.getFinancialAnalytics = async (req, res) => {
     if (view === "monthly") {
       startDate = new Date(date);
       startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
       endDate = new Date(startDate);
       endDate.setMonth(endDate.getMonth() + 1);
     } else {
-      startDate = new Date(date, 0, 1);
+      startDate = new Date(date, 0, 1, 0, 0, 0, 0);
       endDate = new Date(startDate);
       endDate.setFullYear(endDate.getFullYear() + 1);
     }
 
-    const teachers = await Teacher.find(
-      {
-        createdAt: { $gte: startDate, $lt: endDate },
-      },
-      "salary"
-    );
+    // Get all teachers' salaries (Assuming salaries are fixed)
+    const teachers = await Teacher.find({}, "salary");
 
+    // Get students who paid fees during the given period
     const students = await Student.find(
       {
-        "feesPaid.date": { $gte: startDate, $lt: endDate },
+        feesPaid: true,
+        updatedAt: { $gte: startDate, $lt: endDate },
       },
-      "feesPaid class"
+      "class"
     ).populate("class", "studentFees");
 
+    // Calculate total salaries
     const totalSalaries = teachers.reduce(
       (sum, teacher) => sum + teacher.salary,
       0
     );
+
+    // Calculate total student fees collected
     const totalFeesCollected = students.reduce((sum, student) => {
-      if (student.feesPaid && student.class) {
-        return sum + student.class.studentFees;
-      }
-      return sum;
+      return sum + (student.class?.studentFees || 0);
     }, 0);
 
     res.status(200).json({
