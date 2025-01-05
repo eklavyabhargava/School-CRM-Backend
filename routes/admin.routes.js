@@ -28,7 +28,7 @@ const {
   authenticateSession,
 } = require("../middlewares/authMiddleware");
 
-router.post("/register", registerAdmin);
+// router.post("/register", registerAdmin);
 router.post("/login", loginAdmin);
 
 router.use(authenticateSession);

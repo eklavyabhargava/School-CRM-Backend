@@ -1,20 +1,16 @@
 const Student = require("../models/Student");
-const {
-  generateUniqueUsername,
-  generateRandomPassword,
-} = require("./authController");
+const { generateRandomPassword } = require("./authController");
 const mailer = require("../config/emailConfig");
 
 exports.createStudent = async (req, res) => {
   try {
-    req.body.username = await generateUniqueUsername(req.body.name);
     req.body.password = generateRandomPassword();
     const newStudent = await Student.create(req.body);
     const mailOptions = {
       from: process.env.EMAIL,
       to: req.body.email,
       subject: "Your Account Credentials",
-      text: `Hello ${req.body.name},\n\nYour account has been created successfully!\n\nUsername: ${username}\nPassword: ${req.body.password}\n\nPlease log in and change your password after your first login.\n\nBest regards`,
+      text: `Hello ${req.body.name},\n\nYour account has been created successfully!\n\nEmail ID: ${req.body.email}\nPassword: ${req.body.password}\n\nPlease log in and change your password after your first login.\n\nBest regards`,
     };
 
     await mailer.sendMail(mailOptions);

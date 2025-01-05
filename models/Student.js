@@ -5,11 +5,10 @@ const StudentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
   email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   passwordChangeRequired: { type: Boolean, default: true }, // On login for first time, student has to set new password
   dob: { type: Date, required: true },
-  contactDetails: { type: String, required: true },
+  phoneNumber: { type: Number, required: true },
   feesPaid: { type: Boolean, default: false },
   class: { type: mongoose.Schema.Types.ObjectId, ref: "Class", required: true },
 });

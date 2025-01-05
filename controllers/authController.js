@@ -12,18 +12,6 @@ function generateRefreshToken(id) {
 }
 
 module.exports = {
-  // Generate unique username
-  async generateUniqueUsername(name) {
-    let baseUsername = name.toLowerCase().replace(/\s+/g, "");
-    let username = baseUsername;
-    let count = 1;
-    while (await Student.findOne({ username })) {
-      username = `${baseUsername}${count}`;
-      count++;
-    }
-    return username;
-  },
-
   // Generate password
   generateRandomPassword(length = 8) {
     const chars =
@@ -37,10 +25,10 @@ module.exports = {
 
   // Register new admin
   async registerAdmin(req, res) {
-    const { username, password, role } = req.body;
+    const { email, password, role } = req.body;
 
     try {
-      const userFound = await Admin.findOne({ username });
+      const userFound = await Admin.findOne({ email });
       if (userFound) {
         return res
           .status(400)
@@ -51,7 +39,7 @@ module.exports = {
       const hashedPassword = await bcryptjs.hash(password, 16);
 
       const newAdmin = new Admin({
-        username,
+        email,
         password: hashedPassword,
         role: role || "Admin",
       });
@@ -65,10 +53,10 @@ module.exports = {
   },
   // Handle admin login
   async loginAdmin(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-      const admin = await Admin.findOne({ username });
+      const admin = await Admin.findOne({ email });
 
       if (admin) {
         // compare password
@@ -107,10 +95,10 @@ module.exports = {
   },
   // Handle student login
   async loginStudent(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-      const student = await Student.findOne({ username });
+      const student = await Student.findOne({ email });
 
       if (student) {
         // compare password
@@ -158,10 +146,10 @@ module.exports = {
   },
   // Handle Teacher Login
   async loginTeacher(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-      const teacher = await Teacher.findOne({ username });
+      const teacher = await Teacher.findOne({ email });
 
       if (teacher) {
         // compare password
