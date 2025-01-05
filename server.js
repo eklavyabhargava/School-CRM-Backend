@@ -62,7 +62,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    // proxy: true, // uncomment this line on production
+    proxy: true, // uncomment this line on production
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
@@ -71,7 +71,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: false, // set to true before taking it live
+      secure: true, // set to true before taking it live
       maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
     },
   })
