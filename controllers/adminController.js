@@ -35,7 +35,7 @@ exports.getClassAnalytics = async (req, res) => {
 // Get financial analytics
 exports.getFinancialAnalytics = async (req, res) => {
   try {
-    const { view, date } = req.query;
+    const { view, date = "12 12 1990" } = req.query;
     let startDate, endDate;
 
     if (view === "monthly") {

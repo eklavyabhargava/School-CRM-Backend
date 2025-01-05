@@ -98,7 +98,7 @@ module.exports = {
     const { email, password } = req.body;
 
     try {
-      const student = await Student.findOne({ email });
+      const student = await Student.findOne({ email }).lean();
 
       if (student) {
         // compare password
@@ -149,7 +149,7 @@ module.exports = {
     const { email, password } = req.body;
 
     try {
-      const teacher = await Teacher.findOne({ email });
+      const teacher = await Teacher.findOne({ email }).lean();
 
       if (teacher) {
         // compare password
